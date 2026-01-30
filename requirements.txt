@@ -1,0 +1,10 @@
+
+# python -m venv venv create a virtual enviorement
+# venv\Scripts\activate activate the enviorement
+# pip install -r requirements.txt its obiouse
+qiskit
+numpy
+pandas
+ortools
+
+
