@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Python sanal ortam
 venv/
 .venv/
@@ -5,3 +6,53 @@ venv/
 # Python cache
 __pycache__/
 *.pyc
+=======
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+venv/
+env/
+.env
+.venv
+
+
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+profile_default/
+
+data/*
+
+!data/**/.gitkeep
+
+
+!data/raw/*.csv
+
+data/processed/*
+
+
+results/
+reports/figures/*
+!reports/figures/.gitkeep
+
+
+*.xlsx
+*.xls
+*.csv
+
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.pdf
+
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+
+key.json
+secrets.py
+>>>>>>> 5c0655dee717a3f4d01975ed17e5bdf2ba61f078
