@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from pathlib import Path
+import json
 
 
 class TSPGenerator:
@@ -40,24 +41,27 @@ class TSPGenerator:
         return matrix
 
     def save_to_csv(self):
-        """Saves the coordinates and distance matrix to CSV files."""
+        """Saves the coordinates and distance matrix to a single JSON file."""
 
         current_file = Path(__file__).resolve()
         project_root = current_file.parent.parent.parent
 
         output_dir = project_root / "data" / "raw"
-
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        coords_file = output_dir / f"tsp_{self.num_cities}_coords.csv"
-        pd.DataFrame(self.coordinates, columns=["x", "y"]).to_csv(
-            coords_file, index=False
-        )
+        # Dosya ismini tsp_n{sayı}.json formatına getirdik
+        json_file = output_dir / f"tsp_n{self.num_cities}.json"
+        
+        data_to_save = {
+            "num_cities": self.num_cities,
+            "coordinates": self.coordinates.tolist(),
+            "distance_matrix": self.distance_matrix.tolist()
+        }
 
-        dist_file = output_dir / f"tsp_{self.num_cities}_distance_matrix.csv"
-        pd.DataFrame(self.distance_matrix).to_csv(dist_file, index=False)
+        with open(json_file, 'w') as f:
+            json.dump(data_to_save, f, indent=4)
 
-        print(f"Coordinates N={self.num_cities} saved to {output_dir}")
+        print(f"Instance saved to {json_file}")
 
 
 if __name__ == "__main__":
@@ -73,4 +77,4 @@ if __name__ == "__main__":
         tsp_gen.calculate_distance_matrix()
         tsp_gen.save_to_csv()
 
-    print(f"TSP instance with {scenarios} cities generated and saved.")
+    print(f"TSP instances with {scenarios} cities generated and saved.")
