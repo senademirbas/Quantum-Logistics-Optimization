@@ -1,6 +1,7 @@
 import random
 import sys
 import time
+import json
 from pathlib import Path
 
 current_file = Path(__file__).resolve()
@@ -13,39 +14,34 @@ from src.common.utils import load_tsp_data
 
 
 class GeneticAlgorithmTSP:
-    """Class to solve TSP using a Genetic Algorithm.
-    Args:
-        num_cities (int): Number of cities in the TSP instance.
-        pop_size (int): Size of the population.
-        mutation_rate (float): Probability of mutation.
-        generations (int): Number of generations to run the algorithm.
-
-    Returns:
-        None
-
-    Methods:
-        run(): Executes the genetic algorithm and prints the best solution found.
-
-    """
+    """Class to solve TSP using a Genetic Algorithm."""
 
     def __init__(self, num_cities, pop_size=100, mutation_rate=0.01, generations=500):
         self.num_cities = num_cities
         self.pop_size = pop_size
         self.mutation_rate = mutation_rate
         self.generations = generations
+        
+        # Veriyi yükle
         self.distance_matrix, _, self.optimal_cost = load_tsp_data(num_cities)
 
+        # --- HATA DÜZELTME: Optimal Cost 0 ise Solution dosyasından oku ---
+        if self.optimal_cost == 0:
+            try:
+                # data/raw klasörüne git
+                solution_path = project_root / "data" / "raw" / f"tsp_n{num_cities}_solution.json"
+                if solution_path.exists():
+                    with open(solution_path, 'r') as f:
+                        sol_data = json.load(f)
+                        self.optimal_cost = sol_data.get("optimal_cost", 0.0)
+                        print(f"Optimal cost loaded from solution file: {self.optimal_cost}")
+            except Exception as e:
+                print(f"Warning: Could not load optimal cost from solution file: {e}")
+        # ------------------------------------------------------------------
+
     def calculate_distance(self, route):
-        """Calculates the total distance of the given route.
-        Args:
-            route (list): A list representing the order of cities in the route.
-
-        Returns:
-            float: The total distance of the route.
-        """
-
+        """Calculates the total distance of the given route."""
         distance = 0
-
         for i in range(len(route) - 1):
             u, v = route[i], route[i + 1]
             distance += self.distance_matrix[u][v]
@@ -54,13 +50,7 @@ class GeneticAlgorithmTSP:
         return distance
 
     def create_population(self):
-        """Creates the initial population of random routes.
-
-        Args:
-            None
-        Returns:
-            list: A list of routes representing the population."""
-
+        """Creates the initial population of random routes."""
         population = []
         base_route = list(range(self.num_cities))
         for _ in range(self.pop_size):
@@ -69,14 +59,7 @@ class GeneticAlgorithmTSP:
         return population
 
     def selection(self, population, distances):
-        """Selects a parent route using tournament selection.
-        Args:
-            population (list): The current population of routes.
-            distances (list): The distances corresponding to each route in the population.
-
-        Returns:
-            list: A selected parent route.
-        """
+        """Selects a parent route using tournament selection."""
         tournament_size = 5
         candidates_indices = random.sample(range(len(population)), tournament_size)
         best_idx = candidates_indices[0]
@@ -86,15 +69,7 @@ class GeneticAlgorithmTSP:
         return population[best_idx]
 
     def crossover(self, parent1, parent2):
-        """Performs ordered crossover between two parent routes.
-        Args:
-            parent1 (list): The first parent route.
-            parent2 (list): The second parent route.
-
-        Returns:
-            list: The child route resulting from the crossover.
-        """
-
+        """Performs ordered crossover between two parent routes."""
         size = self.num_cities
         start, end = sorted(random.sample(range(size), 2))
         child = [-1] * size
@@ -110,33 +85,20 @@ class GeneticAlgorithmTSP:
         return child
 
     def mutate(self, route):
-        """Mutates a route by swapping two cities with a certain probability.
-        Args:
-            route (list): The route to be mutated.
-
-        Returns:
-            list: The mutated route.
-        """
-
+        """Mutates a route by swapping two cities with a certain probability."""
         if random.random() < self.mutation_rate:
             i, j = random.sample(range(self.num_cities), 2)
             route[i], route[j] = route[j], route[i]
         return route
 
     def run(self):
-        """Runs the genetic algorithm to solve the TSP.
-        Args:
-            None
-
-        Returns:
-            None
-        """
-
+        """Runs the genetic algorithm to solve the TSP."""
         print(f"Starting Genetic Algorithm for TSP (N={self.num_cities})")
 
         start_time = time.time()
         population = self.create_population()
         global_best_distance = float("inf")
+        global_best_route = []
 
         for gen in range(self.generations):
             distances = [self.calculate_distance(ind) for ind in population]
@@ -144,6 +106,8 @@ class GeneticAlgorithmTSP:
             min_dist = min(distances)
             if min_dist < global_best_distance:
                 global_best_distance = min_dist
+                bes_idx_in_pop = distances.index(min_dist)
+                global_best_route = population[bes_idx_in_pop]
 
             new_population = []
 
@@ -162,17 +126,63 @@ class GeneticAlgorithmTSP:
             population = new_population
 
         end_time = time.time()
+        elapsed_time = end_time - start_time
 
-        print(f"Genetic Algorithm completed in {end_time - start_time:.4f} seconds")
+        print(f"Genetic Algorithm completed in {elapsed_time:.4f} seconds")
         print(f"Best distance found: {global_best_distance:.4f}")
         print(f"Known optimal distance: {self.optimal_cost:.4f}")
 
-        gap = ((global_best_distance - self.optimal_cost) / self.optimal_cost) * 100
-        print(f"   -> Optimality gap: %{gap:.2f}%")
+        # --- HATA DÜZELTME: Sıfıra bölme hatasını engelle ---
+        if self.optimal_cost > 0:
+            gap = ((global_best_distance - self.optimal_cost) / self.optimal_cost) * 100
+            print(f"   -> Optimality gap: %{gap:.2f}")
+        else:
+            gap = 0.0
+            print("   -> Optimality gap: N/A (Optimal cost not found)")
+        # ---------------------------------------------------
+
+        # --- Rotayı 0 ile kapatma ---
+        closed_path = [int(city) for city in global_best_route]
+        if closed_path:
+            closed_path.append(closed_path[0])
+        # ---------------------------
+
+        # --- SAVE RESULTS TO JSON ---
+        result_data = {
+            "num_cities": self.num_cities,
+            "generations": self.generations,
+            "pop_size": self.pop_size,
+            "mutation_rate": self.mutation_rate,
+            "execution_time": elapsed_time,
+            "best_distance": float(global_best_distance),
+            "optimal_distance": float(self.optimal_cost),
+            "optimality_gap_percent": gap,
+            "best_route": closed_path
+        }
+
+        output_dir = project_root / "data" / "raw"
+        output_dir.mkdir(parents=True, exist_ok=True)
+        output_file = output_dir / f"tsp_n{self.num_cities}_ga_solution.json"
+
+        try:
+            with open(output_file, "w") as f:
+                json.dump(result_data, f, indent=4)
+            print(f"Results saved to separate file: {output_file.name}")
+        except Exception as e:
+            print(f"Error saving results to JSON: {e}")
+        print("-" * 40)
 
 
 if __name__ == "__main__":
     """Example usage of the GeneticAlgorithmTSP class."""
+    
+    scenarios = [5, 6, 7]
+    print(f"Running Genetic Algorithm for scenarios: {scenarios}\n")
 
-    ga = GeneticAlgorithmTSP(num_cities=7, generations=100)
-    ga.run()
+    for n in scenarios:
+        try:
+            ga = GeneticAlgorithmTSP(num_cities=n, generations=100)
+            ga.run()
+        except Exception as e:
+            print(f"Error running scenario N={n}: {e}")
+            print("-" * 40)

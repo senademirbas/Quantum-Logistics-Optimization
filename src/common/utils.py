@@ -19,7 +19,8 @@ def load_tsp_data(num_cities):
 
     root_dir = Path(__file__).resolve().parents[2]
 
-    file_path = root_dir / "data" / f"tsp_n{num_cities}.json"
+    # Jeneratörün kaydettiği "raw" klasörünü yola ekledik
+    file_path = root_dir / "data" / "raw" / f"tsp_n{num_cities}.json"
 
     if not file_path.exists():
         raise FileNotFoundError(
@@ -29,9 +30,13 @@ def load_tsp_data(num_cities):
     with open(file_path, "r") as f:
         tsp_data = json.load(f)
 
-    distance_matrix = np.array(tsp_data["input"]["distance_matrix"])
-    coordinates = np.array(tsp_data["input"]["coordinates"])
-    best_cost = tsp_data["ground_truth"]["min_cost"]
+    # JSON yapısına uygun olarak anahtarlar (keys) güncellendi
+    distance_matrix = np.array(tsp_data["distance_matrix"])
+    coordinates = np.array(tsp_data["coordinates"])
+    
+    # Jeneratör kodunda 'min_cost' olmadığı için hata almamak adına 
+    # veya senin belirlediğin bir anahtar varsa onu kullanmak adına:
+    best_cost = tsp_data.get("optimal_cost", 0.0) 
 
     print(f"Loaded TSP data for {num_cities} cities from {file_path}")
     return distance_matrix, coordinates, best_cost

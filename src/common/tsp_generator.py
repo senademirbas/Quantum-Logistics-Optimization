@@ -1,23 +1,7 @@
-import json
-import sys
 import numpy as np
+import pandas as pd
 from pathlib import Path
-
-current_file = Path(__file__).resolve()
-project_root = current_file.parents[2]
-if str(project_root) not in sys.path:
-    sys.path.append(str(project_root))
-
-from src.common.brute_force_solver import BruteForceSolver
-
-
-class NumpyEncoder(json.JSONEncoder):
-    """Custom JSON Encoder to handle NumPy arrays."""
-
-    def default(self, obj):
-        if isinstance(obj, np.ndarray):
-            return obj.tolist()
-        return super().default(obj)
+import json
 
 
 class TSPGenerator:
@@ -56,44 +40,28 @@ class TSPGenerator:
         self.distance_matrix = matrix
         return matrix
 
-    def save_data(self):
-        """Saves the coordinates and distance matrix to CSV files."""
+    def save_to_csv(self):
+        """Saves the coordinates and distance matrix to a single JSON file."""
 
-        if len(self.distance_matrix) == 0:
-            self.calculate_distance_matrix()
+        current_file = Path(__file__).resolve()
+        project_root = current_file.parent.parent.parent
 
-        print(
-            f" [N={self.num_cities}] : Calculating optimal solution using Brute Force..."
-        )
-        solver = BruteForceSolver(self.distance_matrix)
-        solution = solver.solve()
-
-        data_payload = {
-            "metadata": {
-                "num_cities": self.num_cities,
-                "seed": self.seed,
-                "description": "TSP Instance with Ground Truth",
-            },
-            "input": {
-                "coordinates": self.coordinates,
-                "distance_matrix": self.distance_matrix,
-            },
-            "ground_truth": {
-                "optimal_path": solution["path"],
-                "min_cost": solution["cost"],
-            },
-        }
-
-        output_dir = project_root / "data"
+        output_dir = project_root / "data" / "raw"
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        filename = output_dir / f"tsp_n{self.num_cities}.json"
+        # Dosya ismini tsp_n{sayı}.json formatına getirdik
+        json_file = output_dir / f"tsp_n{self.num_cities}.json"
+        
+        data_to_save = {
+            "num_cities": self.num_cities,
+            "coordinates": self.coordinates.tolist(),
+            "distance_matrix": self.distance_matrix.tolist()
+        }
 
-        with open(filename, "w") as f:
-            json.dump(data_payload, f, indent=4, cls=NumpyEncoder)
+        with open(json_file, 'w') as f:
+            json.dump(data_to_save, f, indent=4)
 
-        print(f" [N={self.num_cities}]  : {filename}")
-        print(f"   -> : {solution['cost']:.4f}")
+        print(f"Instance saved to {json_file}")
 
 
 if __name__ == "__main__":
@@ -107,6 +75,6 @@ if __name__ == "__main__":
         tsp_gen = TSPGenerator(num_cities=n, seed=2026)
         tsp_gen.generate_data()
         tsp_gen.calculate_distance_matrix()
-        tsp_gen.save_data()
+        tsp_gen.save_to_csv()
 
-    print(f"TSP instance with {scenarios} cities generated and saved.")
+    print(f"TSP instances with {scenarios} cities generated and saved.")
