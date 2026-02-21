@@ -60,8 +60,14 @@ Quantum-Logistics-Optimization/
 │       ├── qaoa_standard.py    # Standard QAOA implementation
 │       └── hybrid_ga_qaoa.py   # NOVELTY: GA-QAOA Hybrid Model
 │
-├── notebooks/                  # Experimental Jupyter Notebooks
-├── reports/                    # Figures, ANOVA reports, and documentation
+├── notebooks/              # Jupyter Notebooks (Experiments)
+│   ├── 01_data_generation.ipynb    # Demo: Data generation
+│   ├── 02_classical_benchmark.ipynb # Experiments: GA, SA
+│   └── 04_result_analysis.ipynb    # Analysis: ANOVA & Plots
+│
+└── reports/                # Documentation & Outputs
+    ├── figures/            # Box plots and convergence curves
+    └── final_report/       # final report drafts
 ├── .agent/memory/              # Project memory bank (Bilingual support)
 ├── requirements.txt            # Project dependencies
 └── README.md                   # Project overview
