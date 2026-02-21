@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 from pathlib import Path
 import json
 
@@ -7,7 +6,7 @@ import json
 class TSPGenerator:
     """Class to generate and save TSP instances with random coordinates."""
 
-    def __init__(self, num_cities, seed=42):
+    def __init__(self, num_cities, seed=2026):
         self.num_cities = num_cities
         self.seed = seed
         np.random.seed(self.seed)
@@ -40,8 +39,8 @@ class TSPGenerator:
         self.distance_matrix = matrix
         return matrix
 
-    def save_to_csv(self):
-        """Saves the coordinates and distance matrix to a single JSON file."""
+    def save_to_json(self):
+        """Saves TSP instance (coordinates + distance matrix) to data/raw/ as JSON."""
 
         current_file = Path(__file__).resolve()
         project_root = current_file.parent.parent.parent
@@ -75,6 +74,6 @@ if __name__ == "__main__":
         tsp_gen = TSPGenerator(num_cities=n, seed=2026)
         tsp_gen.generate_data()
         tsp_gen.calculate_distance_matrix()
-        tsp_gen.save_to_csv()
+        tsp_gen.save_to_json()
 
     print(f"TSP instances with {scenarios} cities generated and saved.")

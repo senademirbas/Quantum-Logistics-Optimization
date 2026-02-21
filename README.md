@@ -1,151 +1,181 @@
 # Quantum-Logistics-Optimization
 
-# ⚛️ AI-Enhanced Quantum-Hybrid Logistics Optimization
+# ⚛️ Yapay Zekâ Destekli Kuantum-Hibrit Lojistik Optimizasyonu
 
-![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=flat&logo=python)
+![Python](https://img.shields.io/badge/Python-3.12-blue?style=flat&logo=python)
 ![Qiskit](https://img.shields.io/badge/Quantum-Qiskit-purple?style=flat&logo=qiskit)
-![Optimization](https://img.shields.io/badge/Optimization-OR--Tools-green)
+![OR-Tools](https://img.shields.io/badge/Solver-OR--Tools-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
-![Status](https://img.shields.io/badge/Status-Active_Development-orange)
+![Status](https://img.shields.io/badge/Status-Hedef_1_Tamamlandı-brightgreen)
 
-## Overview
-
-This project aims to develop an innovative solution approach for the **Traveling Salesman Problem (TSP)**, a fundamental NP-hard problem in the logistics sector.
-
-By bridging the gap between **Quantum Computing** and **Artificial Intelligence**, we propose a hybrid model that utilizes **Genetic Algorithms (GA)** to optimize the parameters ($\beta$ and $\gamma$) of the **Quantum Approximate Optimization Algorithm (QAOA)**. This approach is designed to overcome the limitations of the NISQ (Noisy Intermediate-Scale Quantum) era.
-
-### Key Objectives
-
-1.  **Hybrid Innovation:** Develop a **GA-QAOA** model where the Genetic Algorithm acts as a global optimizer for the quantum circuit parameters.
-2.  **Comprehensive Benchmarking:** Compare the hybrid model against:
-    - **Standard QAOA** (using classical optimizers like COBYLA/SPSA).
-    - **Classical Meta-heuristics:** Genetic Algorithm (GA) and Simulated Annealing (SA).
-    - **Industry Standard:** Google OR-Tools.
-3.  **Scientific Analysis:** Conduct statistical analysis (ANOVA) on solution quality and runtime for TSP instances of N=5, 6, and 7 cities.
+> **TÜBİTAK 2209-A Lisans Araştırma Projesi**  
+> Muğla Sıtkı Koçman Üniversitesi  
+> **Danışman:** Dr. Öğr. Üyesi Ensar Arif Sağbaş
 
 ---
 
-## Project Structure
+## 📋 Proje Özeti
 
-The project is organized to support reproducibility and clear separation of concerns:
+Bu proje, lojistik sektörünün temel NP-zor problemi olan **Gezgin Satıcı Problemi (TSP)** için yenilikçi bir hibrit çözüm geliştirmeyi amaçlamaktadır. Projenin özgün katkısı, **QAOA'nın β ve γ parametrelerini Genetik Algoritma** ile optimize eden bir **GA-QAOA hibrit modeli** önermesidir.
 
-````text
+Proje, kuantum fizibilitesine bağlı **çift planlı** bir yapıya sahiptir: 
+- **Plan A (Kuantum-Hibrit):** GA-QAOA modeli geliştirip Standart QAOA ve klasik yöntemlerle karşılaştırma
+- **Plan B (Klasik):** GA, SA ve OR-Tools'un derinlemesine karşılaştırmalı analizi
+
+---
+
+## 📁 Proje Yapısı
+
+```text
 Quantum-Logistics-Optimization/
 │
-├── README.md               # Project overview and instructions
-├── LICENSE                 # MIT License
-├── .gitignore              # Git ignore rules
-├── requirements.txt        # Dependencies (Qiskit, Numpy, Pandas, etc.)
-│
-├── data/                   # Data Management
-│   ├── tsp_n5.json         # Input Coordinates + Ground Truth (Exact Solution)
-│   ├── tsp_n6.json
-│   └── tsp_n7.json
-│
-├── src/                    # Source Code
-│   ├── __init__.py
-│   ├── common/             # Shared Utilities
-│   │   ├── tsp_generator.py    # Generates Data & Calculates Ground Truth
-│   │   ├── brute_force_solver.py # Exact solver for small N (Ground Truth)
-│   │   └── utils.py            # Data loading & Helper functions
+├── data/
+│   ├── raw/                        ← TSP problem girdileri (seed=2026)
+│   │   ├── tsp_n5.json
+│   │   ├── tsp_n6.json
+│   │   └── tsp_n7.json
 │   │
-│   ├── classical/          # Classical Methods (Plan B & Benchmarks)
-│   │   ├── genetic_algo.py     # Pure Genetic Algorithm implementation
-│   │   ├── sim_annealing.py    # Simulated Annealing implementation
+│   ├── ground_truth/               ← Brute Force optimal çözümler (referans)
+│   │   ├── tsp_n5_solution.json
+│   │   ├── tsp_n6_solution.json
+│   │   └── tsp_n7_solution.json
 │   │
-│   └── quantum/            # Quantum Methods (Plan A)
-│       ├── qubo_converter.py   # TSP to QUBO formulation
-│       ├── qaoa_standard.py    # Standard QAOA implementation
-│       └── hybrid_ga_qaoa.py   # NOVELTY: GA-QAOA Hybrid Model
+│   └── results/
+│       ├── classical/
+│       │   ├── ga/                 ← GA çıktıları
+│       │   ├── sa/                 ← SA çıktıları
+│       │   └── ortools/            ← OR-Tools çıktıları
+│       └── quantum/                ← Plan A (gelecekte kullanılacak)
+│           ├── qaoa_standard/
+│           └── ga_qaoa/
 │
-├── notebooks/              # Jupyter Notebooks (Experiments)
-│   ├── 01_data_generation.ipynb    # Demo: Data generation
-│   ├── 02_classical_benchmark.ipynb # Experiments: GA, SA
-│   └── 04_result_analysis.ipynb    # Analysis: ANOVA & Plots
+├── src/
+│   ├── common/
+│   │   ├── utils.py                ← Path yardımcıları + veri yükleme
+│   │   ├── tsp_generator.py        ← Sentetik TSP üreteci
+│   │   └── brute_force_solver.py   ← Optimal çözüm üreteci (ground truth)
+│   │
+│   ├── classical/
+│   │   ├── genetic_algo.py         ← ✅ Genetik Algoritma (OX crossover, tournament)
+│   │   ├── sim_annealing.py        ← ✅ Simulated Annealing (2-opt, Metropolis)
+│   │   └── or_tools_solver.py      ← ✅ Google OR-Tools (PATH_CHEAPEST_ARC)
+│   │
+│   └── quantum/                    ← ⏳ Plan A — Geliştirme bekliyor
+│       ├── qubo_converter.py
+│       ├── qaoa_standard.py
+│       └── hybrid_ga_qaoa.py
 │
-└── reports/                # Documentation & Outputs
-    ├── figures/            # Box plots and convergence curves
-    └── final_report/       # final report drafts
-
-````
-
-##  Installation
-To set up the project locally, follow these steps:
-
-### 1. Clone the Repository
-
-```bash
-
-git clone [https://github.com/senademirbas/Quantum-Logistics-Optimization.git](https://github.com/senademirbas/Quantum-Logistics-Optimization.git)
-cd Quantum-Logistics-Optimization
-
-````
-
-### 2. Create a Virtual Environment
-
-It is recommended to use a virtual environment to manage dependencies.
-
-```bash
-# For Windows
-python -m venv venv
-.\venv\Scripts\activate
-
-# For Mac/Linux
-source venv/bin/activate
+├── notebooks/                      ← Jupyter deneyleri
+├── reports/figures/                ← Box plot ve yakınsama grafikleri
+├── .agent/memory/                  ← Proje belleği (geliştirici referansı)
+├── requirements.txt
+└── README.md
 ```
 
-### 3. Install Dependencies
+---
 
+## 🚀 Kurulum
+
+### 1. Repoyu Klonla
+```bash
+git clone https://github.com/senademirbas/Quantum-Logistics-Optimization.git
+cd Quantum-Logistics-Optimization
+```
+
+### 2. Sanal Ortam Oluştur
+```bash
+# Windows
+python -m venv .venv
+.\.venv\Scripts\activate
+```
+
+### 3. Bağımlılıkları Yükle
 ```bash
 pip install -r requirements.txt
 ```
 
-## Usage
+> ⚠️ Python 3.12 kullanıyorsanız `ortools==9.11.4210` sürümü gereklidir.
 
-### 1. Generating Data
+---
 
-Before running any algorithms, generate the synthetic TSP maps to ensure all models compete on the exact same graph (using a fixed seed for reproducibility).
+## ▶️ Kullanım
 
+### Adım 1 — TSP Verisi Üret
 ```bash
 python src/common/tsp_generator.py
+# Çıktı: data/raw/tsp_n{5,6,7}.json
 ```
 
-This will create CSV files in data/raw/ for N=5, 6, and 7 cities.
+### Adım 2 — Optimal Çözüm Üret (Ground Truth)
+```bash
+python src/common/brute_force_solver.py
+# Çıktı: data/ground_truth/tsp_n{5,6,7}_solution.json
+```
 
-### 2. Running Classical Benchmarks
-
-To test the classical Genetic Algorithm or Simulated Annealing:
-
+### Adım 3 — Klasik Algoritmaları Çalıştır
 ```bash
 python src/classical/genetic_algo.py
-# or
+# → data/results/classical/ga/tsp_n{N}_ga_solution.json
+
 python src/classical/sim_annealing.py
+# → data/results/classical/sa/tsp_n{N}_sa_solution.json
+
+python src/classical/or_tools_solver.py
+# → data/results/classical/ortools/tsp_n{N}_ortools_solution.json
 ```
 
-### 3. Running Quantum Simulation
+---
 
-To run the hybrid QAOA model:
+## 📊 Metodoloji
 
-```bash
-python src/quantum/hybrid_ga_qaoa.py
-```
+### Araştırma Soruları
 
-## Methodology
+**Plan A (Kuantum odaklı):** GA-QAOA modeli, Standart QAOA ve klasik yöntemlere göre çözüm kalitesi ve istikrar açısından nasıl bir performans sergiler?
 
-The project follows a two-phase research plan:
+**Plan B (Klasik odaklı):** GA, SA ve OR-Tools; N=5, 6, 7 şehirli TSP'de çözüm kalitesi ve hız açısından nasıl karşılaştırılır?
 
-Plan A (Quantum-Hybrid): Focuses on converting TSP to QUBO (Quadratic Unconstrained Binary Optimization) and solving it using QAOA. The novelty lies in replacing standard classical optimizers with a population-based Genetic Algorithm to navigate the quantum landscape more effectively.
+### Performans Metrikleri
+| Metrik | Açıklama |
+|--------|----------|
+| **Çözüm Kalitesi** | Optimaliteye yakınlık (%) |
+| **Çözüm İstikrarı** | 30 bağımsız çalıştırmanın varyansı |
+| **Hesaplama Süresi** | Saniye (milisaniye hassasiyeti) |
 
-Plan B (Classical Pivot): Serves as a risk management strategy and a rigorous benchmark baseline, utilizing optimized GA, SA, and exact solvers (OR-Tools).
+### Analiz Yöntemi
+- **ANOVA** ile algoritmalar arası fark anlamlılık testi
+- **Box plot** ile performans dağılımı görselleştirme
+- **Yakınsama grafikleri** ile optimizasyon süreci analizi
 
-## Team
+---
 
-Researchers:
+## 📅 Proje Durumu
 
+| Hedef | Açıklama | Durum |
+|-------|----------|-------|
+| Hedef 1 | Klasik algoritmaların temel implementasyonu | ✅ Tamamlandı |
+| Hedef 2 | Go/No-Go karar aşaması (QAOA prototipi) | ⏳ Bekliyor |
+| Hedef 3 | Seçilen plana göre geliştirme (A veya B) | ⏳ |
+| Hedef 4 | 30 bağımsız çalıştırma benchmark'ı | ⏳ |
+| Hedef 5 | ANOVA analizi + görselleştirme + rapor | ⏳ |
+
+---
+
+## 👥 Ekip
+
+**Araştırmacılar:**
 - Zeliha Baysan
 - Şehri Sena Demirbaş
 - Yaren Kaya
 
-Advisor:
+**Danışman:**
+- Dr. Öğr. Üyesi Ensar Arif Sağbaş — Muğla Sıtkı Koçman Üniversitesi
 
-- Asst. Prof. Dr. Ensar Arif Sağbaş - Muğla Sıtkı Koçman University
+---
+
+## 📚 Anahtar Referanslar
+
+- Blekos et al. (2024) — QAOA parametreleri ve sınırlamaları
+- Lucas (2014) — TSP → QUBO formülasyonu
+- Preskill (2018) — NISQ dönemi
+- Pihkakoski et al. (2025) — Hibrit kuantum-klasik iş akışları
+- Lo & Shih (2021) — GA ile karmaşık optimizasyon

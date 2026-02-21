@@ -1,137 +1,127 @@
 # Veri Formatları
-<!-- Projedeki tüm JSON dosyalarının yapısı ve path'leri -->
+[Türkçe] | [English](data_format_en.md)
+<!-- Projedeki tüm JSON dosyalarının yapısı ve path'leri — Son güncelleme: 2026-02-21 -->
 
 ## Klasör Yapısı
 
 ```
 data/
-├── raw/                        ← Girdi ve algoritma çıktıları
-│   ├── tsp_n5.json             ← TSP problem verisi (N=5)
+├── raw/                              ← TSP problem girdileri (sadece okunur)
+│   ├── tsp_n5.json
 │   ├── tsp_n6.json
-│   ├── tsp_n7.json
-│   ├── tsp_n5_solution.json    ← Brute Force optimal çözüm
+│   └── tsp_n7.json
+│
+├── ground_truth/                     ← Brute Force optimal çözümler (referans)
+│   ├── tsp_n5_solution.json
 │   ├── tsp_n6_solution.json
-│   ├── tsp_n7_solution.json
-│   ├── tsp_n5_ga_solution.json ← GA çözümü
-│   ├── tsp_n5_sa_solution.json ← SA çözümü
-│   └── tsp_n5_ortools_solution.json ← OR-Tools çözümü
+│   └── tsp_n7_solution.json
+│
 └── results/
-    ├── ga/                     ← (Şu an kullanılmıyor, boş dizin)
-    └── sa/                     ← (Şu an kullanılmıyor, boş dizin)
+    ├── classical/                    ← Klasik algoritma çıktıları
+    │   ├── ga/                       ← GA çıktıları
+    │   │   └── tsp_n{N}_ga_solution.json
+    │   ├── sa/                       ← SA çıktıları
+    │   │   └── tsp_n{N}_sa_solution.json
+    │   └── ortools/                  ← OR-Tools çıktıları
+    │       └── tsp_n{N}_ortools_solution.json
+    └── quantum/                      ← Plan A (gelecekte)
+        ├── qaoa_standard/            ← Standart QAOA (.gitkeep)
+        └── ga_qaoa/                  ← GA-QAOA hibrit (.gitkeep)
 ```
 
-> ⚠️ **SORUN:** Algoritmalar `data/raw/` altına yazıyor ama `data/results/` klasörü de var. Birleştirilmeli veya tutarsızlık giderilmeli.
+**Her klasör `utils.py` path yardımcılarıyla yönetilir:**
+- `get_raw_dir()` → `data/raw/`
+- `get_ground_truth_dir()` → `data/ground_truth/`
+- `get_results_dir("ga"|"sa"|"ortools")` → `data/results/classical/{algo}/`
 
 ---
 
-## Girdi Verisi: `tsp_n{N}.json`
+## Girdi Verisi: `data/raw/tsp_n{N}.json`
 
-**Üretici:** `src/common/tsp_generator.py` → `TSPGenerator.save_to_csv()`
-**Seed:** `seed=2026`
-**Koordinatlar:** 0-100 arası rasgele tam sayı, Öklid mesafesi
+**Üretici:** `src/common/tsp_generator.py` → `TSPGenerator.save_to_csv()`  
+**Seed:** `seed=2026` (hem sınıf default'u, hem __main__ bloğu)  
+**Koordinatlar:** 0-100 arası rastgele tam sayı, Öklid mesafesi
 
 ```json
 {
   "num_cities": 5,
-  "coordinates": [
-    [37, 52],
-    [49, 49],
-    [52, 64],
-    [31, 62],
-    [52, 33]
-  ],
+  "coordinates": [[37,52],[49,49],[52,64],[31,62],[52,33]],
   "distance_matrix": [
-    [0.0,  12.21, 18.03, 18.03, 19.02],
-    [12.21, 0.0,  15.26, 20.22, 16.03],
+    [0.0, 12.21, 18.03, 18.03, 19.02],
     ...
   ]
 }
 ```
 
-### Dikkat
-- `distance_matrix` float değerler içerir
-- OR-Tools kullanırken `int(round(...))` yapılır
-- `optimal_cost` key'i **yok** — bu `tsp_n{N}_solution.json`'dan okunur
+> **Not:** `distance_matrix` float. OR-Tools'a geçerken `int(round(...))` yapılır, sonuç gerçek float'a geri hesaplanır.
 
 ---
 
-## Brute Force Çıktısı: `tsp_n{N}_solution.json`
+## Brute Force: `data/ground_truth/tsp_n{N}_solution.json`
+
+**Üretici:** `src/common/brute_force_solver.py`
 
 ```json
 {
+  "algorithm": "Brute Force",
   "num_cities": 5,
-  "optimal_path": [0, 2, 4, 1, 3, 0],
-  "optimal_cost": 40.123
+  "optimal_path": [0, 3, 2, 4, 1, 0],
+  "optimal_cost": 215.4846
 }
 ```
 
-**Okunduğu yer:** `genetic_algo.py` → optimal_cost referansı için
+**Okunduğu yer:** `utils.load_optimal_cost(N)` — GA, SA, OR-Tools tarafından gap hesabı için kullanılır.
 
 ---
 
-## GA Çıktısı: `tsp_n{N}_ga_solution.json`
+## Standart Algoritma Çıktı Formatı
+
+GA, SA, OR-Tools'un ortak JSON şeması (**snake_case** zorunlu):
 
 ```json
 {
+  "algorithm": "Genetic Algorithm",
   "num_cities": 5,
-  "generations": 500,
-  "pop_size": 100,
-  "mutation_rate": 0.01,
-  "execution_time": 1.234,
-  "best_distance": 42.5,
-  "optimal_distance": 40.0,
-  "optimality_gap_percent": 6.25,
-  "best_route": [0, 2, 4, 1, 3, 0]
+  "best_tour": [0, 3, 2, 4, 1, 0],
+  "best_cost": 215.4846,
+  "optimal_cost": 215.4846,
+  "optimality_gap_percent": 0.0,
+  "duration_sec": 0.741432,
+  "run_params": {
+    "pop_size": 100,
+    "mutation_rate": 0.01,
+    "generations": 500
+  },
+  "convergence_history": [215.4846, ...]
 }
 ```
 
+> `convergence_history`: GA'da her nesil, SA'da her 100 iterasyon kaydedilir. OR-Tools deterministik olduğu için bu alan **yoktur**.
+
 ---
 
-## SA Çıktısı: `tsp_n{N}_sa_solution.json`
+## Hedef 4 — 30-Run Benchmark Dosyaları
 
-```json
-{
-  "Algorithm": "Standard Simulated Annealing",
-  "Cities_N": 5,
-  "Best_Path": [0, 2, 4, 1, 3, 0],
-  "Best_Cost": 42.5,
-  "Duration_Sec": 0.123
-}
+Plan B onaylanınca eklenecek dosya formatı:
+
+```
+data/results/classical/ga/tsp_n5_ga_30runs.json
 ```
 
-> ⚠️ **TUTARSIZLIK:** GA snake_case kullanıyor (`best_route`, `execution_time`), SA PascalCase kullanıyor (`Best_Path`, `Duration_Sec`). Karşılaştırma scripti yazıldığında bu problem yaratır.
-
----
-
-## OR-Tools Çıktısı: `tsp_n{N}_ortools_solution.json`
-
 ```json
 {
-  "Algorithm": "Google OR-Tools",
-  "Cities_N": 5,
-  "Best_Path": [0, 1, 3, 2, 4, 0],
-  "Best_Cost": 40.0,
-  "Duration_Sec": 0.01
-}
-```
-
-> OR-Tools ile SA aynı format kullanıyor — ancak GA farklı. Standartlaştırılmalı.
-
----
-
-## Önerilen Standart Çıktı Formatı (Gelecek)
-
-Karşılaştırma analizi için tüm algoritmalar **aynı JSON şemasını** kullanmalı:
-
-```json
-{
-  "algorithm": "GA",
+  "algorithm": "Genetic Algorithm",
   "num_cities": 5,
-  "best_tour": [0, 2, 4, 1, 3, 0],
-  "best_cost": 42.5,
-  "optimal_cost": 40.0,
-  "optimality_gap_pct": 6.25,
-  "duration_sec": 1.234,
-  "run_params": {}
+  "num_runs": 30,
+  "runs": [
+    { "run_id": 1, "best_cost": 215.48, "optimality_gap_percent": 0.0, "duration_sec": 0.74 },
+    ...
+  ],
+  "summary": {
+    "mean_cost": 215.48,
+    "std_cost": 0.0,
+    "mean_gap_percent": 0.0,
+    "mean_duration_sec": 0.74
+  }
 }
 ```
