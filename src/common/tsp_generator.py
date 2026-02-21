@@ -48,7 +48,7 @@ class TSPGenerator:
         output_dir = project_root / "data" / "raw"
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        # Dosya ismini tsp_n{sayı}.json formatına getirdik
+        # Standardized filename to tsp_n{n}.json format
         json_file = output_dir / f"tsp_n{self.num_cities}.json"
         
         data_to_save = {
