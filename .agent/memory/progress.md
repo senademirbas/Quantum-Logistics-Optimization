@@ -30,7 +30,7 @@
 | `tsp_n{5,6,7}_ga_solution.json` | `data/results/classical/ga/` | ✅ |
 | `tsp_n{5,6,7}_sa_solution.json` | `data/results/classical/sa/` | ✅ |
 | `tsp_n{5,6,7}_ortools_solution.json` | `data/results/classical/ortools/` | ✅ |
-| 30-run benchmark JSON'ları | `data/results/classical/*/` | ⏳ Hedef 4 |
+| 30-run benchmark JSON'ları | `data/results/classical/*/` | ✅ Hedef 4 |
 | Quantum çıktıları | `data/results/quantum/*/` | ⏳ Plan A |
 
 ---
@@ -69,8 +69,8 @@
 - [ ] `hybrid_ga_qaoa.py` — GA parametresiyle driven QAOA
 - [ ] Her model için 30-run benchmark
 
-### Hedef 5 (Her iki plan)
-- [ ] ANOVA analizi scripti (`scipy.stats.f_oneway`)
-- [ ] Box plot (seaborn)
-- [ ] Yakınsama grafikleri (matplotlib)
-- [ ] Nihai rapor
+### Hedef 5 (Anova & Görselleştirme)
+- [x] ANOVA analizi scripti (`scipy.stats.f_oneway`)
+- [x] Box plot (seaborn)
+- [x] Yakınsama grafikleri (matplotlib)
+- [ ] Nihai rapor (Quantum sonrası)

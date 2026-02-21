@@ -13,7 +13,7 @@ if str(project_root) not in sys.path:
 from src.classical.genetic_algo import GeneticAlgorithmTSP
 from src.classical.sim_annealing import SimulatedAnnealingTSP
 from src.classical.or_tools_solver import ORToolsTSPSolver
-from src.common.utils import get_results_dir, load_tsp_data
+from src.common.utils import get_results_dir, load_tsp_data, load_optimal_cost
 
 def run_30_tests(algorithm_name, n, runs=30):
     """Runs designated algorithm 30 times with different seeds."""
@@ -40,11 +40,18 @@ def run_30_tests(algorithm_name, n, runs=30):
             best_cost = res["best_cost"]
             duration = res["duration_sec"]
         
+        # Calculate gap if optimal cost is available
+        optimal_cost = load_optimal_cost(n)
+        gap = None
+        if optimal_cost > 0:
+            gap = round((best_cost - optimal_cost) / optimal_cost * 100, 4)
+
         results.append({
             "run": i + 1,
             "seed": seed,
             "best_cost": float(best_cost),
-            "duration_sec": float(duration)
+            "duration_sec": float(duration),
+            "optimality_gap_percent": gap
         })
 
     # Statistical Calculations

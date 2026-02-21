@@ -30,7 +30,7 @@
 | `tsp_n{5,6,7}_ga_solution.json` | `data/results/classical/ga/` | ✅ |
 | `tsp_n{5,6,7}_sa_solution.json` | `data/results/classical/sa/` | ✅ |
 | `tsp_n{5,6,7}_ortools_solution.json` | `data/results/classical/ortools/` | ✅ |
-| 30-run benchmark JSONs | `data/results/classical/*/` | ⏳ Target 4 |
+| 30-run benchmark JSONs | `data/results/classical/*/` | ✅ Target 4 |
 | Quantum outputs | `data/results/quantum/*/` | ⏳ Plan A |
 
 ---

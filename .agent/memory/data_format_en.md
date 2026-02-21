@@ -112,15 +112,15 @@ data/results/classical/ga/tsp_n5_ga_30runs.json
 {
   "algorithm": "Genetic Algorithm",
   "num_cities": 5,
-  "num_runs": 30,
-  "runs": [
-    { "run_id": 1, "best_cost": 215.48, "optimality_gap_percent": 0.0, "duration_sec": 0.74 },
+  "raw_results": [
+    { "run": 1, "seed": 2000, "best_cost": 215.48, "duration_sec": 0.74, "optimality_gap_percent": 0.0 },
     ...
   ],
-  "summary": {
+  "stats": {
     "mean_cost": 215.48,
     "std_cost": 0.0,
-    "mean_gap_percent": 0.0,
+    "min_cost": 215.48,
+    "max_cost": 220.10,
     "mean_duration_sec": 0.74
   }
 }
