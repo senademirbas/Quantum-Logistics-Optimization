@@ -21,6 +21,7 @@ def run_30_tests(algorithm_name, n, runs=30):
     
     results = []
     output_dir = get_results_dir(algorithm_name.lower().replace(" ", ""))
+    optimal_cost = load_optimal_cost(n)
     
     # OR-Tools is deterministic by default in our setup, but we'll loop it for structural consistency
     for i in range(runs):
@@ -41,7 +42,6 @@ def run_30_tests(algorithm_name, n, runs=30):
             duration = res["duration_sec"]
         
         # Calculate gap if optimal cost is available
-        optimal_cost = load_optimal_cost(n)
         gap = None
         if optimal_cost > 0:
             gap = round((best_cost - optimal_cost) / optimal_cost * 100, 4)
@@ -65,6 +65,7 @@ def run_30_tests(algorithm_name, n, runs=30):
         "stats": {
             "mean_cost": float(np.mean(costs)),
             "std_cost": float(np.std(costs)),
+            "variance_cost": float(np.var(costs)),
             "min_cost": float(np.min(costs)),
             "max_cost": float(np.max(costs)),
             "mean_duration_sec": float(np.mean(durations))

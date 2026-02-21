@@ -33,6 +33,8 @@
 | 30-run benchmark JSON'ları | `data/results/classical/*/` | ✅ Hedef 4 |
 | Quantum çıktıları | `data/results/quantum/*/` | ⏳ Plan A |
 
+> ⚠️ `data/` klasörü `.gitignore`'da olduğu için repo'da yer almaz. `tsp_generator.py` ve `brute_force_solver.py` çalıştırılarak üretilir.
+
 ---
 
 ## Tamamlanan Düzeltmeler (2026-02-21)
@@ -60,7 +62,7 @@
 ### Plan B seçilirse (Hedef 3-4)
 - [ ] GA ve SA için hiperparametre optimizasyonu
 - [ ] 30 bağımsız çalıştırma scripti yaz
-- [ ] 30-run sonuçlarını `data/results/classical/*/tsp_n{N}_{algo}_30runs.json` formatında kaydet
+- [ ] 30-run sonuçlarını `data/results/classical/*/tsp_n{N}_benchmark_30runs.json` formatında kaydet
 - [ ] İstatistiksel özetleri hesapla (mean, std, variance)
 
 ### Plan A seçilirse (Hedef 3-4)
@@ -70,7 +72,7 @@
 - [ ] Her model için 30-run benchmark
 
 ### Hedef 5 (Anova & Görselleştirme)
-- [x] ANOVA analizi scripti (`scipy.stats.f_oneway`)
-- [x] Box plot (seaborn)
-- [x] Yakınsama grafikleri (matplotlib)
+- [ ] ANOVA analizi scripti (`scipy.stats.f_oneway`)
+- [ ] Box plot (seaborn)
+- [ ] Yakınsama grafikleri (matplotlib)
 - [ ] Nihai rapor (Quantum sonrası)

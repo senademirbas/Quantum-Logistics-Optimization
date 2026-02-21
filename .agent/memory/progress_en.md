@@ -33,6 +33,8 @@
 | 30-run benchmark JSONs | `data/results/classical/*/` | ✅ Target 4 |
 | Quantum outputs | `data/results/quantum/*/` | ⏳ Plan A |
 
+> ⚠️ `data/` folder is in `.gitignore` and not tracked in the repo. Generate it by running `tsp_generator.py` and `brute_force_solver.py`.
+
 ---
 
 ## Completed Fixes (2026-02-21)
@@ -60,7 +62,7 @@
 ### If Plan B is selected (Targets 3-4)
 - [ ] Hyperparameter optimization for GA and SA
 - [ ] Write script for 30 independent runs
-- [ ] Save 30-run results in `data/results/classical/*/tsp_n{N}_{algo}_30runs.json` format
+- [ ] Save 30-run results in `data/results/classical/*/tsp_n{N}_benchmark_30runs.json` format
 - [ ] Calculate statistical summaries (mean, std, variance)
 
 ### If Plan A is selected (Targets 3-4)

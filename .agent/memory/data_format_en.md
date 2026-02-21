@@ -105,7 +105,7 @@ Common JSON schema for GA, SA, OR-Tools (**snake_case** mandatory):
 Format for files added when Plan B is confirmed:
 
 ```
-data/results/classical/ga/tsp_n5_ga_30runs.json
+data/results/classical/ga/tsp_n5_benchmark_30runs.json
 ```
 
 ```json
@@ -119,6 +119,7 @@ data/results/classical/ga/tsp_n5_ga_30runs.json
   "stats": {
     "mean_cost": 215.48,
     "std_cost": 0.0,
+    "variance_cost": 0.0,
     "min_cost": 215.48,
     "max_cost": 220.10,
     "mean_duration_sec": 0.74

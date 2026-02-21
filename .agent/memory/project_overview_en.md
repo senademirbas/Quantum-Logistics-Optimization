@@ -48,7 +48,7 @@ Number of Cities: **N = 5, 6, 7** (synthetic, random coordinates, Euclidean dist
 | Period | Phase | Content |
 |--------|-------|---------|
 | Months 1-3 | Parallel Development | Classical: GA + SA coding / Quantum: QUBO + QAOA prototype |
-| **Month 4** | **Go/No-Go Decision** | QAOA prototype evaluation → Plan A or B? |
+| **End of Month 3 – First half of Month 4** | **Go/No-Go Decision** | QAOA prototype evaluation → Plan A or B? |
 | Months 5-8 | Algorithmic Development | Plan A: GA-QAOA + Standard QAOA / Plan B: OR-Tools + hyper-param |
 | Months 9-10 | Data Collection | All models × TSP sets × 30 independent runs |
 | Months 11-12 | Analysis & Reporting | ANOVA, box plots, convergence graphs, final report |

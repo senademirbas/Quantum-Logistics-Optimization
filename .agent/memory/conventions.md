@@ -27,7 +27,8 @@ Quantum-Logistics-Optimization/
 │   ├── common/
 │   │   ├── utils.py             ← Path yardımcıları + veri yükleme
 │   │   ├── tsp_generator.py     ← TSP problem üreteci
-│   │   └── brute_force_solver.py ← Ground truth üreteci
+│   │   ├── brute_force_solver.py ← Ground truth üreteci
+│   │   └── benchmark_runner.py  ← 30-run istatistiksel test
 │   ├── classical/
 │   │   ├── genetic_algo.py      ← GA (tamamlandı ✅)
 │   │   ├── sim_annealing.py     ← SA (tamamlandı ✅)

@@ -48,7 +48,7 @@
 | Dönem | Aşama | İçerik |
 |-------|-------|--------|
 | Ay 1-3 | Paralel Geliştirme | Klasik: GA + SA kodlama / Kuantum: QUBO + QAOA prototipi |
-| **Ay 4** | **Go/No-Go Kararı** | QAOA prototipi değerlendirme → Plan A mı B mi? |
+| **Ay 3 sonu – Ay 4 ilk yarı** | **Go/No-Go Kararı** | QAOA prototipi değerlendirme → Plan A mı B mi? |
 | Ay 5-8 | Algoritmik Geliştirme | Plan A: GA-QAOA + Standart QAOA / Plan B: OR-Tools + hiper-param |
 | Ay 9-10 | Veri Toplama | Tüm modeller × TSP setleri × 30 bağımsız çalıştırma |
 | Ay 11-12 | Analiz & Raporlama | ANOVA, box plot, yakınsama grafikleri, rapor |

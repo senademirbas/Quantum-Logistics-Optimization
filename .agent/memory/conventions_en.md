@@ -27,7 +27,8 @@ Quantum-Logistics-Optimization/
 │   ├── common/
 │   │   ├── utils.py             ← Path helpers + data loading
 │   │   ├── tsp_generator.py     ← TSP problem generator
-│   │   └── brute_force_solver.py ← Ground truth generator
+│   │   ├── brute_force_solver.py ← Ground truth generator
+│   │   └── benchmark_runner.py  ← 30-run statistical testing
 │   ├── classical/
 │   │   ├── genetic_algo.py      ← GA (completed ✅)
 │   │   ├── sim_annealing.py     ← SA (completed ✅)

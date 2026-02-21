@@ -9,7 +9,7 @@ project_root = current_file.parents[2]
 if str(project_root) not in sys.path:
     sys.path.append(str(project_root))
 
-from src.common.utils import load_optimal_cost, get_raw_dir, get_results_dir
+from src.common.utils import load_optimal_cost, load_tsp_data, get_raw_dir, get_results_dir
 
 
 class ORToolsTSPSolver:
@@ -97,12 +97,9 @@ if __name__ == "__main__":
             print(f" [N={n}] WARNING: Input file not found ({input_path.name})")
             continue
 
-        print(f" [N={n}] Processing: {input_path.name}")
+        print(f" [N={n}] Processing: tsp_n{n}.json")
         try:
-            with open(input_path, "r") as f:
-                data = json.load(f)
-
-            distance_matrix = data["distance_matrix"]
+            distance_matrix, _, _ = load_tsp_data(n)
             solver = ORToolsTSPSolver(distance_matrix)
             result = solver.solve()
 
