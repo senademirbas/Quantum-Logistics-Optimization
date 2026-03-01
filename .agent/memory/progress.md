@@ -15,7 +15,7 @@
 | Genetik Algoritma | `src/classical/genetic_algo.py` | ✅ | OX crossover, tournament sel. |
 | Simulated Annealing | `src/classical/sim_annealing.py` | ✅ | 2-opt, Metropolis |
 | Google OR-Tools | `src/classical/or_tools_solver.py` | ✅ | PATH_CHEAPEST_ARC |
-| QUBO Dönüştürücü | `src/quantum/qubo_converter.py` | ⏳ | Plan A — boş |
+| QUBO Dönüştürücü ve Doğrulama | `src/quantum/qubo_converter.py` vb. | ⏳ | Plan A (PyQUBO + D-Wave) |
 | Standart QAOA | `src/quantum/qaoa_standard.py` | ⏳ | Plan A — boş |
 | GA-QAOA Hibrit | `src/quantum/hybrid_ga_qaoa.py` | ⏳ | Plan A — boş |
 
@@ -66,8 +66,9 @@
 - [ ] İstatistiksel özetleri hesapla (mean, std, variance)
 
 ### Plan A seçilirse (Hedef 3-4)
-- [ ] `qubo_converter.py` — TSP → QUBO dönüşümü
-- [ ] `qaoa_standard.py` — SPSA/COBYLA optimizörlü QAOA
+- [ ] `qubo_converter.py` — PyQUBO kullanılarak TSP → QUBO dönüşümü
+- [ ] D-Wave Ocean SDK ile klasik QUBO doğrulaması (`dwave-neal`)
+- [ ] `qaoa_standard.py` — SPSA/COBYLA optimizörlü Qiskit Aer QAOA
 - [ ] `hybrid_ga_qaoa.py` — GA parametresiyle driven QAOA
 - [ ] Her model için 30-run benchmark
 

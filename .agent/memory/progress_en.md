@@ -15,7 +15,7 @@
 | Genetic Algorithm | `src/classical/genetic_algo.py` | ✅ | OX crossover, tournament sel. |
 | Simulated Annealing | `src/classical/sim_annealing.py` | ✅ | 2-opt, Metropolis |
 | Google OR-Tools | `src/classical/or_tools_solver.py` | ✅ | PATH_CHEAPEST_ARC |
-| QUBO Converter | `src/quantum/qubo_converter.py` | ⏳ | Plan A — empty |
+| QUBO Converter and Validation | `src/quantum/qubo_converter.py` etc. | ⏳ | Plan A (PyQUBO + D-Wave) |
 | Standard QAOA | `src/quantum/qaoa_standard.py` | ⏳ | Plan A — empty |
 | GA-QAOA Hybrid | `src/quantum/hybrid_ga_qaoa.py` | ⏳ | Plan A — empty |
 

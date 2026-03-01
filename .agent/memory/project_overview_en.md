@@ -76,9 +76,16 @@ Number of Cities: **N = 5, 6, 7** (synthetic, random coordinates, Euclidean dist
 - **Box plots** — performance distribution / stability
 - **Convergence plots** — best_cost change per generation/iteration
 
+## Software Development Methodology (Spec-Driven Development - SDD)
+
+The software and modeling infrastructure of this project is executed in accordance with **Specification-Driven Development (SDD)** principles (e.g., GitHub Spec Kit philosophy).
+- Before writing any code, all input/output formats, algorithmic boundaries, hyper-parameter spaces, and naming conventions are strictly defined as reference documents (Specs) in the `.agent/memory/` directory.
+- Autonomous AI assistants and team members involved in the development process strictly adhere to these reference documents (Spec-driven) rather than relying on arbitrary code generation ("vibe-coding").
+- Quantum designs such as QAOA and QUBO are converted into mathematical specifications via PyQUBO and validated conceptually using D-Wave classical solvers, isolating logical errors before quantum hardware execution.
+
 ## Keywords
 
-Quantum Computing, QAOA, QUBO, Hybrid Optimization, Genetic Algorithm, Simulated Annealing, Traveling Salesman Problem, OR-Tools, NISQ
+Quantum Computing, QAOA, QUBO, Hybrid Optimization, Genetic Algorithm, Simulated Annealing, Traveling Salesman Problem, OR-Tools, NISQ, Spec-Driven Development
 
 ## Literature References (Mentioned in Spec)
 
