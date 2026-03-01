@@ -160,13 +160,13 @@
 
 ---
 
-## 6. QUBO Dönüştürücü — Plan A
-**Dosya:** `src/quantum/qubo_converter.py`  
+## 6. QUBO Dönüştürücü ve Doğrulama (Validation) — Plan A
+**Dosyalar:** `src/quantum/qubo_converter.py` ve eklenecek doğrulayıcı
 **Durum:** ⏳ BOŞ — Plan A aktif olursa kodlanacak
 
 ### Beklenen Özellikler
-- TSP → QUBO Hamiltonian (Lucas, 2014)
-- `qiskit_optimization` kütüphanesi
+- **PyQUBO ile Modelleme:** TSP'nin yoğun kısıt barındıran yapısının (Lucas, 2014) sembolik ve okunabilir biçimde QUBO Hamiltonian'ına dönüştürülmesi.
+- **D-Wave Ocean SDK ile Doğrulama:** Üretilen modelin donanıma gitmeden önce klasik `dwave-neal` (SimulatedAnnealingSampler) kullanılarak test edilmesi. N=5, 6, 7 için kısıt ihlallerinin olmaması ve enerji spektrumunun doğruluğu onaylanacak.
 
 ---
 

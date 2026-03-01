@@ -160,13 +160,13 @@
 
 ---
 
-## 6. QUBO Converter — Plan A
-**File:** `src/quantum/qubo_converter.py`  
+## 6. QUBO Converter and Validation — Plan A
+**Files:** `src/quantum/qubo_converter.py` and upcoming validator
 **Status:** ⏳ EMPTY — To be coded if Plan A is active
 
 ### Expected Features
-- TSP → QUBO Hamiltonian (Lucas, 2014)
-- `qiskit_optimization` library
+- **Modeling with PyQUBO:** Converting the highly-constrained TSP structure (Lucas, 2014) into a QUBO Hamiltonian in a symbolic, readable way.
+- **Validation with D-Wave Ocean SDK:** Testing the generated model classically using `dwave-neal` (SimulatedAnnealingSampler) before moving to quantum hardware. It will verify constraint satisfaction and correct energy spectrum for N=5, 6, 7.
 
 ---
 

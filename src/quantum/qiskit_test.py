@@ -118,20 +118,23 @@ class QuantumTSPSolver:
 
 
 if __name__ == "__main__":
-    # İstediğin kesin çıktı dizini
-    target_output_dir = r"C:\Users\zelha\Desktop\Quantum-Logistics-Optimization\data\raw"
-    
-    # Okunacak QUBO dosyalarının dizini (çıktı ile aynı dizinde olduğunu varsayıyoruz)
+    # Proje kök dizinini dinamik olarak bul (bu dosya src/quantum/ altında)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.abspath(os.path.join(script_dir, "..", ".."))
+
+    # QUBO dosyaları ve sonuçlar data/raw/ klasöründe
+    target_output_dir = os.path.join(project_root, "data", "raw")
     input_dir = target_output_dir
-    
+
     target_files = [
-        "tsp_n5_qubo.json",
-        "tsp_n6_qubo.json",
-        "tsp_n7_qubo.json"
+        "tsp_n3_qubo.json",   # 9 qubit — test için güvenli
+        # "tsp_n5_qubo.json", # 25 qubit — ~3.8 GB RAM gerektirir, dikkatli kullan
+        # "tsp_n6_qubo.json", # 36 qubit — yerel simülatörde çalışmaz
+        # "tsp_n7_qubo.json", # 49 qubit — yerel simülatörde çalışmaz
     ]
-    
+
     solver = QuantumTSPSolver(output_dir=target_output_dir)
-    
+
     for file_name in target_files:
         full_path = os.path.join(input_dir, file_name)
         solver.solve(full_path)

@@ -76,9 +76,16 @@
 - **Kutu grafikleri (box plot)** — performans dağılımı / istikrar
 - **Yakınsama grafikleri** — nesil/iterasyon başına best_cost değişimi
 
+## Yazılım Geliştirme Metodolojisi (Spec-Driven Development - SDD)
+
+Bu projenin yazılım ve modelleme altyapısı **Spesifikasyon Odaklı Geliştirme (Specification-Driven Development - SDD)** prensiplerine (örn. GitHub Spec Kit felsefesi) uygun olarak yürütülmektedir.
+- Kod yazımına geçilmeden önce tüm girdi/çıktı formatları, algoritmik sınırlar, hiper-parametre uzayları ve isimlendirme kuralları (Conventions) `.agent/memory/` dizininde referans dokümanlar (Spec) olarak tanımlanmıştır.
+- Geliştirme sürecine dâhil olan otonom yapay zekâ asistanları ve ekip üyeleri, "vibe-coding" (rastgele kod üretimi) yerine bu katı referans dokümanlarına bağlı kalarak (Spec-driven) kod üretir.
+- QAOA ve QUBO gibi kuantum tasarımları, PyQUBO ile matematiksel spesifikasyonlara dönüştürülüp D-Wave klasik çözücüleriyle test edilerek hata riski ("hallucination" veya kurgu hatası) donanıma inmeden önce izole edilir.
+
 ## Anahtar Kelimeler
 
-Kuantum Hesaplama, QAOA, QUBO, Hibrit Optimizasyon, Genetik Algoritma, Simulated Annealing, Gezgin Satıcı Problemi, OR-Tools, NISQ
+Kuantum Hesaplama, QAOA, QUBO, Hibrit Optimizasyon, Genetik Algoritma, Simulated Annealing, Gezgin Satıcı Problemi, OR-Tools, NISQ, Spec-Driven Development
 
 ## Literatür Referansları (Spec'te Geçenler)
 

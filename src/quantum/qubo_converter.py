@@ -89,6 +89,7 @@ if __name__ == "__main__":
     
     # The exact files you specifically want to process
     target_files = [
+        "tsp_n3.json",  # Test için küçük örnek
         "tsp_n5.json",
         "tsp_n6.json",
         "tsp_n7.json"
